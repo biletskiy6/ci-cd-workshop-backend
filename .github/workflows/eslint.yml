@@ -1,4 +1,4 @@
-name: eslint
+name: lint
 on:
   push:
     branches: [main]
@@ -7,19 +7,20 @@ on:
 
 jobs:
   eslint:
-    runs-on: ubuntu-latest
+    container:
+      image: node:14.17.0-alpine
     steps:
       - uses: actions/checkout@v2
-      - name: Install NVM
-        run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-          export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-      - name: Install Node.JS
-        env:
-          NODE_VERSION: 14.17.0
-        run: nvm install $NODE_VERSION
       - name: Install dependencies
         run: npm install
       - name: Lint source code with ESLint
         run: npm run lint
+  prettier:
+    container:
+      image: node:14.17.0-alpine
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Lint source code with ESLint
+        run: npm run check:format
