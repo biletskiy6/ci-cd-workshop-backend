@@ -3,23 +3,17 @@ stages:
 
 eslint:
   stage: lint
+  image: node:14.17.0-alpine
   variables:
     NODE_VERSION: 14.17.0
   script:
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-    - export NVM_DIR=~/.nvm
-    - source ~/.nvm/nvm.sh
-    - nvm install $NODE_VERSION
     - npm install
     - npm run lint
 prettier:
   stage: lint
+  image: node:14.17.0-alpine
   variables:
     NODE_VERSION: 14.17.0
   script:
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-    - export NVM_DIR=~/.nvm
-    - source ~/.nvm/nvm.sh
-    - nvm install $NODE_VERSION
     - npm install
     - npm run check:format
